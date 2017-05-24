@@ -3,7 +3,7 @@ $ = function(_id) {
 }
 _bind = function(func, that) {
   return function() {
-    func.call(that)
+    func.apply(that, arguments)
   }
 }
 
@@ -29,7 +29,7 @@ function TodoView(myList, finishedListView) {
 }
 
 TodoView.prototype.bind = function() {
-  $("button-add-item").addEventListener('click', _bind(this.addBtnListner, this));
+  $("input-add-item").addEventListener('submit', _bind(this.addItem, this));
   $("button-return").addEventListener('click', _bind(this.toggleView, this));
   $("button-view-finished").addEventListener('click', _bind(this.toggleView, this));
 }
@@ -47,7 +47,8 @@ TodoView.prototype.toggleView = function() {
   }
 }
 
-TodoView.prototype.addBtnListner = function() {
+TodoView.prototype.addItem = function(e) {
+  e.preventDefault();
   var content = this.todoInput.value;
   if (content.length == 0)
     alert('NOTHING TO ADD.');
